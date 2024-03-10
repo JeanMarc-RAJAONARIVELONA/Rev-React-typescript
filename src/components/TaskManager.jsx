@@ -42,7 +42,7 @@ export const TaskManager = () => {
   };
 
   const filteredTasks = tasks.filter((task) =>
-    task.title.toLowerCase().includes(searchKeyword.toLowerCase()),
+    task.title.toLowerCase().includes(searchKeyword.toLowerCase())
   );
 
   return (

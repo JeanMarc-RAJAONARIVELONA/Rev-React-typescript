@@ -1,4 +1,4 @@
-import { TaskManager } from "./components/TaskManager";
+import { TaskManager } from "./components/TaskManagerType";
 import "./App.css";
 
 function App() {
