@@ -1,50 +1,16 @@
-import React, { useState } from "react";
-import { nanoid } from "nanoid";
+import React from "react";
+import { useTaskManager } from "./UseTaskManager";
 import "./TaskManager.css";
 
-interface Task {
-  id: string;
-  title: string;
-}
+export const TaskManager: React.FC = () => {
+  const { filteredTasks, addTask, completeTask, updateTask, setSearchKeyword } =
+    useTaskManager();
 
-interface TaskManagerProps {}
-
-export const TaskManager: React.FC<TaskManagerProps> = () => {
-  const [title, setTitle] = useState<string>("");
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  const completeTask = (id: string): void => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-  };
-
-  const updateTask = (id: string, updatedTask: Partial<Task>): void => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, ...updatedTask } : task
-      )
-    );
-  };
-
-  const addTask = (): void => {
-    if (title.length < 1) {
-      return;
-    }
-    const newTask: Task = {
-      id: nanoid(),
-      title,
-    };
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-    setTitle("");
-  };
+  const [title, setTitle] = React.useState("");
 
   const handleSearch = (ev: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchKeyword(ev.target.value);
   };
-
-  const filteredTasks: Task[] = tasks.filter((task) =>
-    task.title.toLowerCase().includes(searchKeyword.toLowerCase())
-  );
 
   return (
     <div className="container">
@@ -62,11 +28,19 @@ export const TaskManager: React.FC<TaskManagerProps> = () => {
           onChange={(ev) => setTitle(ev.target.value)}
           onKeyDown={(ev) => {
             if (ev.key === "Enter") {
-              addTask();
+              addTask(title);
+              setTitle("");
             }
           }}
         />
-        <button onClick={addTask}>Add Task</button>
+        <button
+          onClick={() => {
+            addTask(title);
+            setTitle("");
+          }}
+        >
+          Add Task
+        </button>
       </div>
 
       <ul className="container">
